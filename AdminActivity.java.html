@@ -1,0 +1,128 @@
+<html>
+<head>
+<title>AdminActivity.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #7a7e85;}
+.s4 { color: #6aab73;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+AdminActivity.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">smartsense</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">android</span><span class="s2">.</span><span class="s1">os</span><span class="s2">.</span><span class="s1">Bundle</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">android</span><span class="s2">.</span><span class="s1">text</span><span class="s2">.</span><span class="s1">TextUtils</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">android</span><span class="s2">.</span><span class="s1">widget</span><span class="s2">.</span><span class="s1">Button</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">android</span><span class="s2">.</span><span class="s1">widget</span><span class="s2">.</span><span class="s1">EditText</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">android</span><span class="s2">.</span><span class="s1">widget</span><span class="s2">.</span><span class="s1">Toast</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">androidx</span><span class="s2">.</span><span class="s1">annotation</span><span class="s2">.</span><span class="s1">NonNull</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">androidx</span><span class="s2">.</span><span class="s1">appcompat</span><span class="s2">.</span><span class="s1">app</span><span class="s2">.</span><span class="s1">AppCompatActivity</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">androidx</span><span class="s2">.</span><span class="s1">recyclerview</span><span class="s2">.</span><span class="s1">widget</span><span class="s2">.</span><span class="s1">LinearLayoutManager</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">androidx</span><span class="s2">.</span><span class="s1">recyclerview</span><span class="s2">.</span><span class="s1">widget</span><span class="s2">.</span><span class="s1">RecyclerView</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">smartsense</span><span class="s2">.</span><span class="s1">adapter</span><span class="s2">.</span><span class="s1">AlertAdapter</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">smartsense</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">AlertModel</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">google</span><span class="s2">.</span><span class="s1">firebase</span><span class="s2">.</span><span class="s1">database</span><span class="s2">.</span><span class="s1">DataSnapshot</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">google</span><span class="s2">.</span><span class="s1">firebase</span><span class="s2">.</span><span class="s1">database</span><span class="s2">.</span><span class="s1">DatabaseError</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">google</span><span class="s2">.</span><span class="s1">firebase</span><span class="s2">.</span><span class="s1">database</span><span class="s2">.</span><span class="s1">DatabaseReference</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">google</span><span class="s2">.</span><span class="s1">firebase</span><span class="s2">.</span><span class="s1">database</span><span class="s2">.</span><span class="s1">FirebaseDatabase</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">google</span><span class="s2">.</span><span class="s1">firebase</span><span class="s2">.</span><span class="s1">database</span><span class="s2">.</span><span class="s1">ValueEventListener</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">ArrayList</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">List</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">UUID</span><span class="s2">;</span>
+
+<span class="s0">public class </span><span class="s1">AdminActivity </span><span class="s0">extends </span><span class="s1">AppCompatActivity </span><span class="s2">{</span>
+
+    <span class="s0">private </span><span class="s1">EditText alertTypeInput</span><span class="s2">, </span><span class="s1">alertMessageInput</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">Button addAlertBtn</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">RecyclerView alertsRecyclerView</span><span class="s2">;</span>
+
+    <span class="s0">private </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">AlertModel</span><span class="s2">&gt; </span><span class="s1">alertList</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">AlertAdapter alertAdapter</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">DatabaseReference alertsRef</span><span class="s2">;</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">onCreate</span><span class="s2">(</span><span class="s1">Bundle savedInstanceState</span><span class="s2">) {</span>
+        <span class="s0">super</span><span class="s2">.</span><span class="s1">onCreate</span><span class="s2">(</span><span class="s1">savedInstanceState</span><span class="s2">);</span>
+        <span class="s1">setContentView</span><span class="s2">(</span><span class="s1">R</span><span class="s2">.</span><span class="s1">layout</span><span class="s2">.</span><span class="s1">activity_admin</span><span class="s2">);</span>
+
+        <span class="s3">// Firebase reference</span>
+        <span class="s1">alertsRef </span><span class="s2">= </span><span class="s1">FirebaseDatabase</span><span class="s2">.</span><span class="s1">getInstance</span><span class="s2">().</span><span class="s1">getReference</span><span class="s2">(</span><span class="s4">&quot;alerts&quot;</span><span class="s2">);</span>
+
+        <span class="s3">// UI components</span>
+        <span class="s1">alertTypeInput </span><span class="s2">= </span><span class="s1">findViewById</span><span class="s2">(</span><span class="s1">R</span><span class="s2">.</span><span class="s1">id</span><span class="s2">.</span><span class="s1">alertTypeInput</span><span class="s2">);</span>
+        <span class="s1">alertMessageInput </span><span class="s2">= </span><span class="s1">findViewById</span><span class="s2">(</span><span class="s1">R</span><span class="s2">.</span><span class="s1">id</span><span class="s2">.</span><span class="s1">alertMessageInput</span><span class="s2">);</span>
+        <span class="s1">addAlertBtn </span><span class="s2">= </span><span class="s1">findViewById</span><span class="s2">(</span><span class="s1">R</span><span class="s2">.</span><span class="s1">id</span><span class="s2">.</span><span class="s1">addAlertBtn</span><span class="s2">);</span>
+        <span class="s1">alertsRecyclerView </span><span class="s2">= </span><span class="s1">findViewById</span><span class="s2">(</span><span class="s1">R</span><span class="s2">.</span><span class="s1">id</span><span class="s2">.</span><span class="s1">alertsRecyclerView</span><span class="s2">);</span>
+
+        <span class="s1">alertsRecyclerView</span><span class="s2">.</span><span class="s1">setLayoutManager</span><span class="s2">(</span><span class="s0">new </span><span class="s1">LinearLayoutManager</span><span class="s2">(</span><span class="s0">this</span><span class="s2">));</span>
+        <span class="s1">alertList </span><span class="s2">= </span><span class="s0">new </span><span class="s1">ArrayList</span><span class="s2">&lt;&gt;();</span>
+        <span class="s1">alertAdapter </span><span class="s2">= </span><span class="s0">new </span><span class="s1">AlertAdapter</span><span class="s2">(</span><span class="s1">alertList</span><span class="s2">, </span><span class="s1">alertsRef</span><span class="s2">, </span><span class="s0">true</span><span class="s2">); </span><span class="s3">// isAdmin = true</span>
+        <span class="s1">alertsRecyclerView</span><span class="s2">.</span><span class="s1">setAdapter</span><span class="s2">(</span><span class="s1">alertAdapter</span><span class="s2">);</span>
+
+        <span class="s3">// Load alerts from Firebase</span>
+        <span class="s1">loadAlerts</span><span class="s2">();</span>
+
+        <span class="s3">// Add new alert</span>
+        <span class="s1">addAlertBtn</span><span class="s2">.</span><span class="s1">setOnClickListener</span><span class="s2">(</span><span class="s1">v -&gt; addAlert</span><span class="s2">());</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private void </span><span class="s1">loadAlerts</span><span class="s2">() {</span>
+        <span class="s1">alertsRef</span><span class="s2">.</span><span class="s1">addValueEventListener</span><span class="s2">(</span><span class="s0">new </span><span class="s1">ValueEventListener</span><span class="s2">() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onDataChange</span><span class="s2">(</span><span class="s1">@NonNull DataSnapshot snapshot</span><span class="s2">) {</span>
+                <span class="s1">alertList</span><span class="s2">.</span><span class="s1">clear</span><span class="s2">();</span>
+                <span class="s0">for </span><span class="s2">(</span><span class="s1">DataSnapshot snap </span><span class="s2">: </span><span class="s1">snapshot</span><span class="s2">.</span><span class="s1">getChildren</span><span class="s2">()) {</span>
+                    <span class="s1">AlertModel model </span><span class="s2">= </span><span class="s1">snap</span><span class="s2">.</span><span class="s1">getValue</span><span class="s2">(</span><span class="s1">AlertModel</span><span class="s2">.</span><span class="s0">class</span><span class="s2">);</span>
+                    <span class="s0">if </span><span class="s2">(</span><span class="s1">model </span><span class="s2">!= </span><span class="s0">null</span><span class="s2">) {</span>
+                        <span class="s1">alertList</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">model</span><span class="s2">);</span>
+                    <span class="s2">}</span>
+                <span class="s2">}</span>
+                <span class="s1">alertAdapter</span><span class="s2">.</span><span class="s1">notifyDataSetChanged</span><span class="s2">();</span>
+            <span class="s2">}</span>
+
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onCancelled</span><span class="s2">(</span><span class="s1">@NonNull DatabaseError error</span><span class="s2">) {</span>
+                <span class="s1">Toast</span><span class="s2">.</span><span class="s1">makeText</span><span class="s2">(</span><span class="s1">AdminActivity</span><span class="s2">.</span><span class="s0">this</span><span class="s2">, </span><span class="s4">&quot;Failed to load alerts&quot;</span><span class="s2">, </span><span class="s1">Toast</span><span class="s2">.</span><span class="s1">LENGTH_SHORT</span><span class="s2">).</span><span class="s1">show</span><span class="s2">();</span>
+            <span class="s2">}</span>
+        <span class="s2">});</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private void </span><span class="s1">addAlert</span><span class="s2">() {</span>
+        <span class="s1">String type </span><span class="s2">= </span><span class="s1">alertTypeInput</span><span class="s2">.</span><span class="s1">getText</span><span class="s2">().</span><span class="s1">toString</span><span class="s2">().</span><span class="s1">trim</span><span class="s2">();</span>
+        <span class="s1">String message </span><span class="s2">= </span><span class="s1">alertMessageInput</span><span class="s2">.</span><span class="s1">getText</span><span class="s2">().</span><span class="s1">toString</span><span class="s2">().</span><span class="s1">trim</span><span class="s2">();</span>
+
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">TextUtils</span><span class="s2">.</span><span class="s1">isEmpty</span><span class="s2">(</span><span class="s1">type</span><span class="s2">) || </span><span class="s1">TextUtils</span><span class="s2">.</span><span class="s1">isEmpty</span><span class="s2">(</span><span class="s1">message</span><span class="s2">)) {</span>
+            <span class="s1">Toast</span><span class="s2">.</span><span class="s1">makeText</span><span class="s2">(</span><span class="s0">this</span><span class="s2">, </span><span class="s4">&quot;Please fill all fields&quot;</span><span class="s2">, </span><span class="s1">Toast</span><span class="s2">.</span><span class="s1">LENGTH_SHORT</span><span class="s2">).</span><span class="s1">show</span><span class="s2">();</span>
+            <span class="s0">return</span><span class="s2">;</span>
+        <span class="s2">}</span>
+
+        <span class="s1">String id </span><span class="s2">= </span><span class="s1">UUID</span><span class="s2">.</span><span class="s1">randomUUID</span><span class="s2">().</span><span class="s1">toString</span><span class="s2">();</span>
+        <span class="s0">long </span><span class="s1">timestamp </span><span class="s2">= </span><span class="s1">System</span><span class="s2">.</span><span class="s1">currentTimeMillis</span><span class="s2">();</span>
+
+        <span class="s1">AlertModel alert </span><span class="s2">= </span><span class="s0">new </span><span class="s1">AlertModel</span><span class="s2">(</span><span class="s1">id</span><span class="s2">, </span><span class="s1">type</span><span class="s2">, </span><span class="s1">message</span><span class="s2">, </span><span class="s1">timestamp</span><span class="s2">);</span>
+
+        <span class="s1">alertsRef</span><span class="s2">.</span><span class="s1">child</span><span class="s2">(</span><span class="s1">id</span><span class="s2">).</span><span class="s1">setValue</span><span class="s2">(</span><span class="s1">alert</span><span class="s2">)</span>
+                <span class="s2">.</span><span class="s1">addOnSuccessListener</span><span class="s2">(</span><span class="s1">aVoid -&gt; </span><span class="s2">{</span>
+                    <span class="s1">Toast</span><span class="s2">.</span><span class="s1">makeText</span><span class="s2">(</span><span class="s0">this</span><span class="s2">, </span><span class="s4">&quot;Alert added&quot;</span><span class="s2">, </span><span class="s1">Toast</span><span class="s2">.</span><span class="s1">LENGTH_SHORT</span><span class="s2">).</span><span class="s1">show</span><span class="s2">();</span>
+                    <span class="s1">alertTypeInput</span><span class="s2">.</span><span class="s1">setText</span><span class="s2">(</span><span class="s4">&quot;&quot;</span><span class="s2">);</span>
+                    <span class="s1">alertMessageInput</span><span class="s2">.</span><span class="s1">setText</span><span class="s2">(</span><span class="s4">&quot;&quot;</span><span class="s2">);</span>
+                <span class="s2">})</span>
+                <span class="s2">.</span><span class="s1">addOnFailureListener</span><span class="s2">(</span><span class="s1">e -&gt;</span>
+                        <span class="s1">Toast</span><span class="s2">.</span><span class="s1">makeText</span><span class="s2">(</span><span class="s0">this</span><span class="s2">, </span><span class="s4">&quot;Error: &quot; </span><span class="s2">+ </span><span class="s1">e</span><span class="s2">.</span><span class="s1">getMessage</span><span class="s2">(), </span><span class="s1">Toast</span><span class="s2">.</span><span class="s1">LENGTH_SHORT</span><span class="s2">).</span><span class="s1">show</span><span class="s2">()</span>
+                <span class="s2">);</span>
+    <span class="s2">}</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>
