@@ -1,0 +1,65 @@
+<html>
+<head>
+<title>SettingsActivity.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #7a7e85;}
+.s4 { color: #6aab73;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+SettingsActivity.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">smartsense</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">android</span><span class="s2">.</span><span class="s1">content</span><span class="s2">.</span><span class="s1">SharedPreferences</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">android</span><span class="s2">.</span><span class="s1">os</span><span class="s2">.</span><span class="s1">Bundle</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">android</span><span class="s2">.</span><span class="s1">widget</span><span class="s2">.</span><span class="s1">Switch</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">androidx</span><span class="s2">.</span><span class="s1">appcompat</span><span class="s2">.</span><span class="s1">app</span><span class="s2">.</span><span class="s1">AppCompatActivity</span><span class="s2">;</span>
+
+<span class="s0">public class </span><span class="s1">SettingsActivity </span><span class="s0">extends </span><span class="s1">AppCompatActivity </span><span class="s2">{</span>
+
+    <span class="s0">private </span><span class="s1">Switch flashSwitch</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">Switch vibrationSwitch</span><span class="s2">;</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">onCreate</span><span class="s2">(</span><span class="s1">Bundle savedInstanceState</span><span class="s2">) {</span>
+        <span class="s0">super</span><span class="s2">.</span><span class="s1">onCreate</span><span class="s2">(</span><span class="s1">savedInstanceState</span><span class="s2">);</span>
+        <span class="s1">setContentView</span><span class="s2">(</span><span class="s1">R</span><span class="s2">.</span><span class="s1">layout</span><span class="s2">.</span><span class="s1">activity_settings</span><span class="s2">);</span>
+
+        <span class="s3">// Initialize switches</span>
+        <span class="s1">flashSwitch </span><span class="s2">= </span><span class="s1">findViewById</span><span class="s2">(</span><span class="s1">R</span><span class="s2">.</span><span class="s1">id</span><span class="s2">.</span><span class="s1">switch_flash</span><span class="s2">);</span>
+        <span class="s1">vibrationSwitch </span><span class="s2">= </span><span class="s1">findViewById</span><span class="s2">(</span><span class="s1">R</span><span class="s2">.</span><span class="s1">id</span><span class="s2">.</span><span class="s1">switch_vibration</span><span class="s2">);</span>
+
+        <span class="s3">// Load saved preferences</span>
+        <span class="s1">SharedPreferences preferences </span><span class="s2">= </span><span class="s1">getSharedPreferences</span><span class="s2">(</span><span class="s4">&quot;AlertPrefs&quot;</span><span class="s2">, </span><span class="s1">MODE_PRIVATE</span><span class="s2">);</span>
+        <span class="s0">boolean </span><span class="s1">useFlash </span><span class="s2">= </span><span class="s1">preferences</span><span class="s2">.</span><span class="s1">getBoolean</span><span class="s2">(</span><span class="s4">&quot;useFlash&quot;</span><span class="s2">, </span><span class="s0">true</span><span class="s2">);</span>
+        <span class="s0">boolean </span><span class="s1">useVibration </span><span class="s2">= </span><span class="s1">preferences</span><span class="s2">.</span><span class="s1">getBoolean</span><span class="s2">(</span><span class="s4">&quot;useVibration&quot;</span><span class="s2">, </span><span class="s0">true</span><span class="s2">);</span>
+
+        <span class="s1">flashSwitch</span><span class="s2">.</span><span class="s1">setChecked</span><span class="s2">(</span><span class="s1">useFlash</span><span class="s2">);</span>
+        <span class="s1">vibrationSwitch</span><span class="s2">.</span><span class="s1">setChecked</span><span class="s2">(</span><span class="s1">useVibration</span><span class="s2">);</span>
+
+        <span class="s3">// Save new settings when toggled</span>
+        <span class="s1">flashSwitch</span><span class="s2">.</span><span class="s1">setOnCheckedChangeListener</span><span class="s2">((</span><span class="s1">buttonView</span><span class="s2">, </span><span class="s1">isChecked</span><span class="s2">) </span><span class="s1">-&gt; </span><span class="s2">{</span>
+            <span class="s1">SharedPreferences</span><span class="s2">.</span><span class="s1">Editor editor </span><span class="s2">= </span><span class="s1">preferences</span><span class="s2">.</span><span class="s1">edit</span><span class="s2">();</span>
+            <span class="s1">editor</span><span class="s2">.</span><span class="s1">putBoolean</span><span class="s2">(</span><span class="s4">&quot;useFlash&quot;</span><span class="s2">, </span><span class="s1">isChecked</span><span class="s2">);</span>
+            <span class="s1">editor</span><span class="s2">.</span><span class="s1">apply</span><span class="s2">();</span>
+        <span class="s2">});</span>
+
+        <span class="s1">vibrationSwitch</span><span class="s2">.</span><span class="s1">setOnCheckedChangeListener</span><span class="s2">((</span><span class="s1">buttonView</span><span class="s2">, </span><span class="s1">isChecked</span><span class="s2">) </span><span class="s1">-&gt; </span><span class="s2">{</span>
+            <span class="s1">SharedPreferences</span><span class="s2">.</span><span class="s1">Editor editor </span><span class="s2">= </span><span class="s1">preferences</span><span class="s2">.</span><span class="s1">edit</span><span class="s2">();</span>
+            <span class="s1">editor</span><span class="s2">.</span><span class="s1">putBoolean</span><span class="s2">(</span><span class="s4">&quot;useVibration&quot;</span><span class="s2">, </span><span class="s1">isChecked</span><span class="s2">);</span>
+            <span class="s1">editor</span><span class="s2">.</span><span class="s1">apply</span><span class="s2">();</span>
+        <span class="s2">});</span>
+    <span class="s2">}</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>
