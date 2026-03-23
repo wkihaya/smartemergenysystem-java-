@@ -1,0 +1,111 @@
+<html>
+<head>
+<title>RegisterActivity.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+.s4 { color: #7a7e85;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+RegisterActivity.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">smartsense</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">android</span><span class="s2">.</span><span class="s1">content</span><span class="s2">.</span><span class="s1">Intent</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">android</span><span class="s2">.</span><span class="s1">os</span><span class="s2">.</span><span class="s1">Bundle</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">android</span><span class="s2">.</span><span class="s1">text</span><span class="s2">.</span><span class="s1">TextUtils</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">android</span><span class="s2">.</span><span class="s1">widget</span><span class="s2">.</span><span class="s1">ArrayAdapter</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">android</span><span class="s2">.</span><span class="s1">widget</span><span class="s2">.</span><span class="s1">Button</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">android</span><span class="s2">.</span><span class="s1">widget</span><span class="s2">.</span><span class="s1">EditText</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">android</span><span class="s2">.</span><span class="s1">widget</span><span class="s2">.</span><span class="s1">Spinner</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">android</span><span class="s2">.</span><span class="s1">widget</span><span class="s2">.</span><span class="s1">Toast</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">androidx</span><span class="s2">.</span><span class="s1">appcompat</span><span class="s2">.</span><span class="s1">app</span><span class="s2">.</span><span class="s1">AppCompatActivity</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">google</span><span class="s2">.</span><span class="s1">firebase</span><span class="s2">.</span><span class="s1">auth</span><span class="s2">.</span><span class="s1">FirebaseAuth</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">google</span><span class="s2">.</span><span class="s1">firebase</span><span class="s2">.</span><span class="s1">database</span><span class="s2">.</span><span class="s1">DatabaseReference</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">google</span><span class="s2">.</span><span class="s1">firebase</span><span class="s2">.</span><span class="s1">database</span><span class="s2">.</span><span class="s1">FirebaseDatabase</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">HashMap</span><span class="s2">;</span>
+
+<span class="s0">public class </span><span class="s1">RegisterActivity </span><span class="s0">extends </span><span class="s1">AppCompatActivity </span><span class="s2">{</span>
+
+    <span class="s0">private </span><span class="s1">EditText regEmail</span><span class="s2">, </span><span class="s1">regPassword</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">Spinner roleSpinner</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">Button btnCreateAccount</span><span class="s2">, </span><span class="s1">btnBackLogin</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">FirebaseAuth mAuth</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">DatabaseReference usersRef</span><span class="s2">;</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">onCreate</span><span class="s2">(</span><span class="s1">Bundle savedInstanceState</span><span class="s2">) {</span>
+        <span class="s0">super</span><span class="s2">.</span><span class="s1">onCreate</span><span class="s2">(</span><span class="s1">savedInstanceState</span><span class="s2">);</span>
+        <span class="s1">setContentView</span><span class="s2">(</span><span class="s1">R</span><span class="s2">.</span><span class="s1">layout</span><span class="s2">.</span><span class="s1">activity_register</span><span class="s2">);</span>
+
+        <span class="s1">regEmail </span><span class="s2">= </span><span class="s1">findViewById</span><span class="s2">(</span><span class="s1">R</span><span class="s2">.</span><span class="s1">id</span><span class="s2">.</span><span class="s1">regEmail</span><span class="s2">);</span>
+        <span class="s1">regPassword </span><span class="s2">= </span><span class="s1">findViewById</span><span class="s2">(</span><span class="s1">R</span><span class="s2">.</span><span class="s1">id</span><span class="s2">.</span><span class="s1">regPassword</span><span class="s2">);</span>
+        <span class="s1">roleSpinner </span><span class="s2">= </span><span class="s1">findViewById</span><span class="s2">(</span><span class="s1">R</span><span class="s2">.</span><span class="s1">id</span><span class="s2">.</span><span class="s1">roleSpinner</span><span class="s2">);</span>
+        <span class="s1">btnCreateAccount </span><span class="s2">= </span><span class="s1">findViewById</span><span class="s2">(</span><span class="s1">R</span><span class="s2">.</span><span class="s1">id</span><span class="s2">.</span><span class="s1">btnCreateAccount</span><span class="s2">);</span>
+        <span class="s1">btnBackLogin </span><span class="s2">= </span><span class="s1">findViewById</span><span class="s2">(</span><span class="s1">R</span><span class="s2">.</span><span class="s1">id</span><span class="s2">.</span><span class="s1">btnBackLogin</span><span class="s2">);</span>
+
+        <span class="s1">mAuth </span><span class="s2">= </span><span class="s1">FirebaseAuth</span><span class="s2">.</span><span class="s1">getInstance</span><span class="s2">();</span>
+        <span class="s1">usersRef </span><span class="s2">= </span><span class="s1">FirebaseDatabase</span><span class="s2">.</span><span class="s1">getInstance</span><span class="s2">().</span><span class="s1">getReference</span><span class="s2">(</span><span class="s3">&quot;users&quot;</span><span class="s2">);</span>
+
+        <span class="s4">// Populate spinner with roles</span>
+        <span class="s1">ArrayAdapter</span><span class="s2">&lt;</span><span class="s1">CharSequence</span><span class="s2">&gt; </span><span class="s1">adapter </span><span class="s2">= </span><span class="s1">ArrayAdapter</span><span class="s2">.</span><span class="s1">createFromResource</span><span class="s2">(</span>
+                <span class="s0">this</span><span class="s2">, </span><span class="s1">R</span><span class="s2">.</span><span class="s1">array</span><span class="s2">.</span><span class="s1">user_roles</span><span class="s2">, </span><span class="s1">android</span><span class="s2">.</span><span class="s1">R</span><span class="s2">.</span><span class="s1">layout</span><span class="s2">.</span><span class="s1">simple_spinner_item</span><span class="s2">);</span>
+        <span class="s1">adapter</span><span class="s2">.</span><span class="s1">setDropDownViewResource</span><span class="s2">(</span><span class="s1">android</span><span class="s2">.</span><span class="s1">R</span><span class="s2">.</span><span class="s1">layout</span><span class="s2">.</span><span class="s1">simple_spinner_dropdown_item</span><span class="s2">);</span>
+        <span class="s1">roleSpinner</span><span class="s2">.</span><span class="s1">setAdapter</span><span class="s2">(</span><span class="s1">adapter</span><span class="s2">);</span>
+
+        <span class="s1">btnCreateAccount</span><span class="s2">.</span><span class="s1">setOnClickListener</span><span class="s2">(</span><span class="s1">v -&gt; createAccount</span><span class="s2">());</span>
+        <span class="s1">btnBackLogin</span><span class="s2">.</span><span class="s1">setOnClickListener</span><span class="s2">(</span><span class="s1">v -&gt;</span>
+                <span class="s1">startActivity</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Intent</span><span class="s2">(</span><span class="s1">RegisterActivity</span><span class="s2">.</span><span class="s0">this</span><span class="s2">, </span><span class="s1">LoginActivity</span><span class="s2">.</span><span class="s0">class</span><span class="s2">))</span>
+        <span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private void </span><span class="s1">createAccount</span><span class="s2">() {</span>
+        <span class="s1">String email </span><span class="s2">= </span><span class="s1">regEmail</span><span class="s2">.</span><span class="s1">getText</span><span class="s2">().</span><span class="s1">toString</span><span class="s2">().</span><span class="s1">trim</span><span class="s2">();</span>
+        <span class="s1">String password </span><span class="s2">= </span><span class="s1">regPassword</span><span class="s2">.</span><span class="s1">getText</span><span class="s2">().</span><span class="s1">toString</span><span class="s2">().</span><span class="s1">trim</span><span class="s2">();</span>
+        <span class="s1">String role </span><span class="s2">= </span><span class="s1">roleSpinner</span><span class="s2">.</span><span class="s1">getSelectedItem</span><span class="s2">().</span><span class="s1">toString</span><span class="s2">();</span>
+
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">TextUtils</span><span class="s2">.</span><span class="s1">isEmpty</span><span class="s2">(</span><span class="s1">email</span><span class="s2">) || </span><span class="s1">TextUtils</span><span class="s2">.</span><span class="s1">isEmpty</span><span class="s2">(</span><span class="s1">password</span><span class="s2">)) {</span>
+            <span class="s1">Toast</span><span class="s2">.</span><span class="s1">makeText</span><span class="s2">(</span><span class="s0">this</span><span class="s2">, </span><span class="s3">&quot;Fill all fields&quot;</span><span class="s2">, </span><span class="s1">Toast</span><span class="s2">.</span><span class="s1">LENGTH_SHORT</span><span class="s2">).</span><span class="s1">show</span><span class="s2">();</span>
+            <span class="s0">return</span><span class="s2">;</span>
+        <span class="s2">}</span>
+
+        <span class="s1">mAuth</span><span class="s2">.</span><span class="s1">createUserWithEmailAndPassword</span><span class="s2">(</span><span class="s1">email</span><span class="s2">, </span><span class="s1">password</span><span class="s2">)</span>
+                <span class="s2">.</span><span class="s1">addOnCompleteListener</span><span class="s2">(</span><span class="s1">task -&gt; </span><span class="s2">{</span>
+                    <span class="s0">if </span><span class="s2">(</span><span class="s1">task</span><span class="s2">.</span><span class="s1">isSuccessful</span><span class="s2">()) {</span>
+                        <span class="s1">String uid </span><span class="s2">= </span><span class="s1">mAuth</span><span class="s2">.</span><span class="s1">getCurrentUser</span><span class="s2">().</span><span class="s1">getUid</span><span class="s2">();</span>
+                        <span class="s1">HashMap</span><span class="s2">&lt;</span><span class="s1">String</span><span class="s2">, </span><span class="s1">String</span><span class="s2">&gt; </span><span class="s1">userMap </span><span class="s2">= </span><span class="s0">new </span><span class="s1">HashMap</span><span class="s2">&lt;&gt;();</span>
+                        <span class="s1">userMap</span><span class="s2">.</span><span class="s1">put</span><span class="s2">(</span><span class="s3">&quot;email&quot;</span><span class="s2">, </span><span class="s1">email</span><span class="s2">);</span>
+                        <span class="s1">userMap</span><span class="s2">.</span><span class="s1">put</span><span class="s2">(</span><span class="s3">&quot;role&quot;</span><span class="s2">, </span><span class="s1">role</span><span class="s2">);</span>
+
+                        <span class="s1">usersRef</span><span class="s2">.</span><span class="s1">child</span><span class="s2">(</span><span class="s1">uid</span><span class="s2">).</span><span class="s1">setValue</span><span class="s2">(</span><span class="s1">userMap</span><span class="s2">)</span>
+                                <span class="s2">.</span><span class="s1">addOnCompleteListener</span><span class="s2">(</span><span class="s1">innerTask -&gt; </span><span class="s2">{</span>
+                                    <span class="s0">if </span><span class="s2">(</span><span class="s1">innerTask</span><span class="s2">.</span><span class="s1">isSuccessful</span><span class="s2">()) {</span>
+                                        <span class="s1">Toast</span><span class="s2">.</span><span class="s1">makeText</span><span class="s2">(</span><span class="s0">this</span><span class="s2">, </span><span class="s3">&quot;Account Created&quot;</span><span class="s2">, </span><span class="s1">Toast</span><span class="s2">.</span><span class="s1">LENGTH_SHORT</span><span class="s2">).</span><span class="s1">show</span><span class="s2">();</span>
+                                        <span class="s4">// Send role to HomeActivity directly</span>
+                                        <span class="s1">Intent intent </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Intent</span><span class="s2">(</span><span class="s0">this</span><span class="s2">, </span><span class="s1">HomeActivity</span><span class="s2">.</span><span class="s0">class</span><span class="s2">);</span>
+                                        <span class="s1">intent</span><span class="s2">.</span><span class="s1">putExtra</span><span class="s2">(</span><span class="s3">&quot;role&quot;</span><span class="s2">, </span><span class="s1">role</span><span class="s2">);</span>
+                                        <span class="s1">startActivity</span><span class="s2">(</span><span class="s1">intent</span><span class="s2">);</span>
+                                        <span class="s1">finish</span><span class="s2">();</span>
+                                    <span class="s2">} </span><span class="s0">else </span><span class="s2">{</span>
+                                        <span class="s1">Toast</span><span class="s2">.</span><span class="s1">makeText</span><span class="s2">(</span><span class="s0">this</span><span class="s2">, </span><span class="s3">&quot;Error saving user data&quot;</span><span class="s2">, </span><span class="s1">Toast</span><span class="s2">.</span><span class="s1">LENGTH_SHORT</span><span class="s2">).</span><span class="s1">show</span><span class="s2">();</span>
+                                    <span class="s2">}</span>
+                                <span class="s2">});</span>
+                    <span class="s2">} </span><span class="s0">else </span><span class="s2">{</span>
+                        <span class="s1">Toast</span><span class="s2">.</span><span class="s1">makeText</span><span class="s2">(</span><span class="s0">this</span><span class="s2">, </span><span class="s3">&quot;Error: &quot; </span><span class="s2">+ </span><span class="s1">task</span><span class="s2">.</span><span class="s1">getException</span><span class="s2">().</span><span class="s1">getMessage</span><span class="s2">(), </span><span class="s1">Toast</span><span class="s2">.</span><span class="s1">LENGTH_SHORT</span><span class="s2">).</span><span class="s1">show</span><span class="s2">();</span>
+                    <span class="s2">}</span>
+                <span class="s2">});</span>
+    <span class="s2">}</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>
